@@ -1,49 +1,41 @@
 # prompt-mage
 
-A prompt architecture skill for Claude. Feed it your raw ideas and goals. Get back a structured, step-by-step prompt kit that organizes your work, assigns the right AI model to each step, flags anything that is too vague or overcomplicated, and eliminates redundant effort.
+Most AI work stalls not because the model is too weak, but because the prompt is too big. A single prompt trying to do five things produces five mediocre results at best, and a tangled mess at worst. You end up re-running the same work, getting inconsistent outputs, and spending more time managing the AI than doing the actual work.
 
----
+prompt-mage fixes that. You give it your raw ideas, goals, and any files or resources you are working with. It audits what you have, strips out redundancy, sequences the work correctly, assigns the right AI model to each step, and hands you back a complete Prompt Kit: a numbered set of ready-to-run prompts that build on each other and get you to a finished deliverable. Each prompt does exactly one thing. Each one tells you exactly what to feed it and exactly what it will produce. No drift, no wasted effort, no context confusion.
 
-## What it does
-
-- Ingests one or more raw prompts, no matter how rough
-- Accepts files, folders, Dropbox links, Google Drive links, URLs, or pasted content
-- Audits your prompts before building the kit - flags anything oversized, redundant, or ambiguous
-- Produces a numbered Prompt Kit: each step has a clear purpose, a recommended model, and is ready to paste and run
-- Assigns Haiku, Sonnet, or Opus to each step based on actual complexity - never defaults to expensive models unless genuinely required
-- Ends with execution notes and a confirmation of what you will have in hand when the full kit is complete
-
----
-
-## Repository structure
-
-    prompt-mage/
-      PROMPT.md      <- The copy-paste ready prompt. Use this in both modes below.
-      README.md      <- This file.
+prompt-mage also delivers a HOW-TO guide alongside every kit so you know exactly how to run each prompt, in what order, with what inputs, and what you will have in hand when it is all done.
 
 ---
 
 ## QUICK START - USING WITH CLAUDE CHAT
 
-Two options. Option A for one-off use, Option B if you will use prompt-mage regularly.
+prompt-mage is designed to run as a dedicated Claude Project. This is the correct and intended way to use it in Claude Chat. Do not paste PROMPT.md into a general-purpose chat or mix it with other work. Give it its own project so it stays focused and its instructions are always active.
 
-### Option A - Paste and go
+### Setup (one time)
 
-Copy the full contents of PROMPT.md and paste it as your first message in any new Claude chat. prompt-mage activates immediately and guides you from there.
+1. In Claude.ai, create a new Project and name it prompt-mage
+2. Open PROMPT.md from this repo and copy the full contents
+3. Paste into the Project Instructions field and save
+4. Set the default model to claude-sonnet-4-6
 
-### Option B - Claude Project (recommended)
+That is the only setup you will ever do. prompt-mage is now installed and ready.
 
-Create a new Project, paste the full contents of PROMPT.md into the Project Instructions, and save. Every new chat inside that project runs prompt-mage automatically - no pasting required.
+### Running it
 
-Use a new chat within the same project for each discrete prompt in the kit. Clean context per step prevents earlier outputs from bleeding into unrelated work.
+Open a new chat inside the prompt-mage project. prompt-mage will greet you and walk you through the entire intake process step by step - no additional instructions needed. It will ask for your prompts, your external links, and your files in order, confirm everything back to you, show you a plan, and wait for your approval before building anything.
 
-Create a new project when switching to a completely different domain or client. The PROMPT.md instructions stay the same - just reinstall into the new project.
+When it delivers your Prompt Kit, take it and use it elsewhere. Run each prompt in its own separate project or chat, dedicated to that task. The prompt-mage project is only for generating kits, not for running them.
+
+### One rule
+
+Use a new chat inside the prompt-mage project each time you want to generate a new kit. Do not reuse an old chat. Old conversation history will interfere with intake for a new set of goals.
 
 ---
 
 ## SKILL INSTALL - USING WITH CLAUDE CODE
 
-This mode installs prompt-mage as a named skill in your Claude Code environment so you can call it by name from any working session.
+Install prompt-mage as a named skill so you can call it by name from any Claude Code session.
 
 ### Install
 
@@ -65,53 +57,67 @@ You should see prompt-mage in the output.
 
 ### Run
 
-From any Claude Code session, call the skill by name:
+From any Claude Code session:
 
     claude skill prompt-mage
 
-Claude Code will load the prompt-mage instructions and prompt you for input.
+Claude Code loads the instructions and walks you through intake the same way as Claude Chat.
 
-### Passing input and files
+### Passing files and directories
 
-For a single file:
+Single file:
 
-    claude skill prompt-mage --file /path/to/your/file.xlsx
+    claude skill prompt-mage --file /path/to/file.xlsx
 
-For multiple files:
+Multiple files:
 
     claude skill prompt-mage --file /path/to/file1.pdf --file /path/to/file2.csv
 
-For a full directory:
+Full directory:
 
     claude skill prompt-mage --dir /path/to/project/folder
 
-For a URL or cloud link, paste it inline in your prompt text and describe what it contains.
+For URLs or cloud links, paste them inline in your prompt text during intake and describe what each contains.
 
-### How to run each prompt in the kit - Claude Code
+### Running kit prompts in Claude Code
 
-The Prompt Kit output is identical to Claude Chat. For execution in Claude Code:
+Each prompt in your kit specifies its required inputs and expected output. For prompts that depend on prior outputs, save the prior output to a temp file and pass it at the next step:
 
-- Run standalone prompts as individual claude commands or sessions
-- For dependent prompts, save the prior output to a temp file and reference it at the next step:
+    claude --file /tmp/prompt1-output.txt "Paste Prompt 2 text here"
 
-    claude --file /tmp/prompt1-output.txt "Paste your Prompt 2 text here"
-
-- Use --file flags to attach required resources at each step as specified in the kit
-- Review each output before proceeding. Do not chain steps automatically without verification.
+Review each output before proceeding. Do not chain steps without verification.
 
 ---
 
-## What you will have at the end of a complete prompt chain
+## How the prompt works
 
-When you have run all prompts in the kit in sequence, you will have:
+prompt-mage runs a structured six-stage intake and build process. It does not skip stages and does not rush ahead. Here is what happens internally at each stage.
 
-A set of discrete verified outputs - one per prompt step. Each output is a finished work product for that task: a financial model, a written brief, a ranked list, a feasibility summary, or whatever the step specified.
+Stage 0 - Introduction: prompt-mage opens with a clear explanation of the process and tells you exactly what it is going to ask for before asking for anything.
 
-A completed deliverable that matches your original stated goal, built from modular parts that were each checked before the next step ran.
+Stage 1 - Prompt intake: you paste your raw goals and ideas, one batch at a time. prompt-mage confirms each submission and gives you a full list to review before moving on.
 
-If the kit specified a final synthesis step, that step will combine prior outputs into a single consolidated document, report, or model ready for review or distribution.
+Stage 2 - External resources: you provide any URLs, Dropbox links, Google Drive links, or other external references. prompt-mage logs each one with a description and which goal it serves.
 
-The Execution Notes in your kit will tell you explicitly when the chain is complete and exactly what you should have in hand at that point. Do not consider the work done until you reach that confirmation.
+Stage 3 - File uploads: you upload files in batches of up to 3 at a time. prompt-mage confirms each batch and builds a complete file registry before proceeding.
+
+Stage 4 - Processing: prompt-mage runs a full audit of everything it has received. It flags oversized prompts (OVERSIZED), duplicate work (REDUNDANT), unclear output targets (AMBIGUOUS), and steps that do not contribute to the goal (UNNECESSARY). It maps dependencies, identifies parallel execution opportunities, and assigns a model to every step.
+
+Stage 5 - Plan review: before building anything, prompt-mage presents a top-level plan showing every prompt it intends to create, what each does, what it depends on, and what model it will use. You confirm or revise before it builds.
+
+Stage 6 - Delivery: prompt-mage delivers the full Prompt Kit followed immediately by the HOW-TO guide. The HOW-TO is a per-prompt step-by-step execution guide including what to attach, what to paste from prior steps, what the output should look like, and what to do if something goes wrong. It ends with a Completion Checklist that states exactly what you will have in hand when the full chain is done.
+
+---
+
+## Model selection
+
+prompt-mage assigns one of three models to each step and uses the cheapest model that can do the job correctly.
+
+haiku: fast, low cost. Used for file reading, data extraction, summarization, formatting, classification, and low-stakes drafts.
+
+sonnet: the default for most real work. Used for financial modeling, business writing, structured analysis, planning, research, and anything requiring moderate multi-step reasoning. If you are unsure which model a task needs, it is sonnet.
+
+opus: reserved for tasks that genuinely cannot be broken into discrete steps and require simultaneous reasoning across multiple truly interdependent variables. If prompt-mage assigns opus to more than one step in a kit, it stops and tells you the problem needs further decomposition. In practice, most business and financial work runs entirely on sonnet.
 
 ---
 
@@ -128,7 +134,7 @@ Example 1 - B2C subscription service (simple, user story style)
 prompt-mage will:
 - Identify two distinct tasks: analysis and ideation
 - Sequence them so findings from the analysis feed the ideation step
-- Assign haiku to the data extraction and sonnet to the synthesis and recommendations
+- Assign haiku to data extraction and sonnet to synthesis and recommendations
 - Tell you to upload your survey file and cancellation export before running step one
 
 ---
@@ -168,45 +174,20 @@ prompt-mage will:
 - Sequence the carbon modeling and demand response eligibility check in parallel after the top five opportunities are ranked
 - Hold the roadmap generation as the final step, explicitly dependent on all prior outputs
 - Register the interval meter data, maintenance logs, energy contracts, equipment specs, and Dropbox folder contents as named resources with step assignments
-- Assign haiku to data extraction from meter logs, sonnet to ranking models and carbon impact analysis, and confirm whether opus is genuinely needed or whether the cross-model dependencies can be resolved with well-structured sonnet prompts and explicit context passing
+- Assign haiku to data extraction from meter logs, sonnet to ranking models and carbon impact analysis, and confirm whether opus is genuinely needed or whether cross-model dependencies can be resolved with well-structured sonnet prompts and explicit context passing
 
 ---
 
-## Model selection
+## Repository structure
 
-prompt-mage assigns one of three models to each step in your kit:
-
-haiku
-- Fast and cheap
-- Used for: reading files, summarizing, formatting, simple lists, data extraction
-
-sonnet
-- Smart and efficient
-- Used for: financial analysis, business writing, planning, research, most real work
-- Default for anything requiring moderate reasoning
-
-opus
-- Most powerful, highest cost
-- Used only when a task genuinely cannot be broken into smaller steps AND requires simultaneous reasoning across multiple interdependent variables
-- If prompt-mage assigns opus to more than one step, it will stop and tell you the problem needs further decomposition
-
-In practice: most business and financial modeling work runs entirely on sonnet. Opus is rare.
-
----
-
-## Tips
-
-- Rougher inputs are fine. prompt-mage is designed to handle messy, half-formed ideas.
-- If a prompt gets flagged as OVERSIZED or AMBIGUOUS, read the flag before proceeding. It will save you time downstream.
-- Paste prior prompt outputs directly into the next chat as instructed. Context does not carry automatically between separate Claude conversations.
-- If a step produces output that looks wrong, do not proceed to the next step. Fix it first.
-- The Execution Notes at the end of every kit will tell you when the chain is complete and what you should have in hand.
+    prompt-mage/
+      PROMPT.md      <- The full prompt. Paste into Claude Project Instructions or install as a Claude Code skill.
+      README.md      <- This file.
 
 ---
 
 ## Requirements
 
-- Claude Pro account (for Projects in Mode 1)
-- Claude Code installed (for Mode 2)
+- Claude Pro account required for Projects in Claude Chat
+- Claude Code CLI required for skill install
 - Recommended default model: claude-sonnet-4-6
-- Opus available if prompt-mage determines it is genuinely needed (rare)
