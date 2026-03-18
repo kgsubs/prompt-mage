@@ -4,6 +4,8 @@ Most AI work stalls not because the model is too weak, but because the prompt is
 
 prompt-mage fixes that. You give it your raw ideas, goals, and any files or resources you are working with. It audits what you have, strips out redundancy, sequences the work correctly, assigns the right AI model to each step, and hands you back a complete Prompt Kit: a numbered set of ready-to-run prompts that build on each other and get you to a finished deliverable. Each prompt does exactly one thing. Each one tells you exactly what to feed it and exactly what it will produce. No drift, no wasted effort, no context confusion.
 
+It does not matter what state your input is in. prompt-mage handles the full spectrum equally well: a few lines of rough ideas scribbled in a note, a detailed and highly structured brief, a library of existing prompts you want reorganized, messy documents with no clear output goal, a single complex prompt that needs to be decomposed, or an entire folder of files and reference material. Whatever you bring, in whatever condition, prompt-mage processes it and produces a clean, structured kit. You do not need to clean up your thinking before you start.
+
 prompt-mage also delivers a HOW-TO guide alongside every kit so you know exactly how to run each prompt, in what order, with what inputs, and what you will have in hand when it is all done.
 
 ---
