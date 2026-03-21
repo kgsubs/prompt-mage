@@ -1,37 +1,39 @@
 # prompt-mage
 
-Most AI work stalls not because the model is too weak, but because the prompt is too big. A single prompt trying to do five things produces five mediocre results at best, and a tangled mess at worst. You end up re-running the same work, getting inconsistent outputs, and spending more time managing the AI than doing the actual work.
+Tell Claude to do something complex in one prompt and you get a messy, incomplete result. Break that same task into a series of focused steps and you get exactly what you asked for.
 
-prompt-mage fixes that. You give it your raw ideas, goals, and any files or resources you are working with. It audits what you have, strips out redundancy, sequences the work correctly, assigns the right AI model to each step, and hands you back a complete Prompt Kit: a numbered set of ready-to-run prompts that build on each other and get you to a finished deliverable. Each prompt does exactly one thing. Each one tells you exactly what to feed it and exactly what it will produce. No drift, no wasted effort, no context confusion.
-
-It does not matter what state your input is in. prompt-mage handles the full spectrum equally well: a few lines of rough ideas scribbled in a note, a detailed and highly structured brief, a library of existing prompts you want reorganized, messy documents with no clear output goal, a single complex prompt that needs to be decomposed, or an entire folder of files and reference material. Whatever you bring, in whatever condition, prompt-mage processes it and produces a clean, structured kit. You do not need to clean up your thinking before you start.
-
-prompt-mage also delivers a HOW-TO guide alongside every kit so you know exactly how to run each prompt, in what order, with what inputs, and what you will have in hand when it is all done.
+prompt-mage does the breaking down for you. Give it your goal - rough notes, a brief, files, whatever you have - and it builds you a step-by-step Prompt Kit: a numbered list of ready-to-run prompts, each focused on one task, in the right order, with instructions on exactly how to use them.
 
 ---
 
 ## QUICK START - USING WITH CLAUDE CHAT
 
-prompt-mage is designed to run as a dedicated Claude Project. This is the correct and intended way to use it in Claude Chat. Do not paste PROMPT.md into a general-purpose chat or mix it with other work. Give it its own project so it stays focused and its instructions are always active.
+### Step 1 - Create your prompt-mage workspace (one time, 5 minutes)
 
-### Setup (one time)
+Claude Projects let you save a set of instructions that stay active across every conversation. You will create one Project just for prompt-mage and never need to set it up again.
 
-1. In Claude.ai, create a new Project and name it prompt-mage
-2. Open PROMPT.md from this repo and copy the full contents
-3. Paste into the Project Instructions field and save
-4. Set the default model to claude-sonnet-4-6
+1. Go to claude.ai and sign in
+2. Click Projects in the left sidebar
+3. Click New Project and name it prompt-mage
+4. Click Set Instructions (or the pencil icon near the top of the project)
+5. Open PROMPT.md from this repo, copy all the text, and paste it into the instructions field
+6. Save
+7. Set the model to claude-sonnet-4-6
 
-That is the only setup you will ever do. prompt-mage is now installed and ready.
+That is it. Setup is done.
 
-### Running it
+### Step 2 - Use it
 
-Open a new chat inside the prompt-mage project. prompt-mage will greet you and walk you through the entire intake process step by step - no additional instructions needed. It will ask for your prompts, your external links, and your files in order, confirm everything back to you, show you a plan, and wait for your approval before building anything.
+1. Open a new chat inside your prompt-mage project
+2. prompt-mage will greet you and ask for your goals, files, and any links - one step at a time
+3. Follow its prompts. It will confirm everything back to you and show you a plan before building anything
+4. When it delivers your kit, each prompt is ready to copy and run
 
-When it delivers your Prompt Kit, take it and use it elsewhere. Run each prompt in its own separate project or chat, dedicated to that task. The prompt-mage project is only for generating kits, not for running them.
+### Step 3 - Run your prompts
 
-### One rule
+Take each prompt from your kit and run it in its own separate new chat. Do not run them inside the prompt-mage project - that workspace is only for building kits.
 
-Use a new chat inside the prompt-mage project each time you want to generate a new kit. Do not reuse an old chat. Old conversation history will interfere with intake for a new set of goals.
+Each new kit needs a fresh chat inside the prompt-mage project. Do not reuse an old one.
 
 ---
 
