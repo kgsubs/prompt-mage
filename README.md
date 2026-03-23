@@ -1,8 +1,24 @@
 # prompt-mage
+### Super simple, totally magic.
 
-Tell Claude to do something complex in one prompt and you get a messy, incomplete result. Break that same task into a series of focused steps and you get exactly what you asked for.
+Getting great results from Claude is not about writing the perfect prompt. It is about breaking your goal into the right steps. prompt-mage does that for you.
 
-prompt-mage does the breaking down for you. Give it your goal - rough notes, a brief, files, whatever you have - and it builds you a step-by-step Prompt Kit: a numbered list of ready-to-run prompts, each focused on one task, in the right order, with instructions on exactly how to use them.
+Tell it what you want. Paste in rough notes, a quick idea, a detailed brief, a pile of files - anything. prompt-mage figures out the steps, puts them in the right order, assigns the best Claude model to each one, and hands you back a ready-to-run Prompt Kit with instructions on exactly how to use it.
+
+No prompt engineering. No copy-paste gymnastics. No losing track of what goes where. Just give it your goal and let it do the thinking.
+
+It works for anything:
+
+- Business: strategy, financial modeling, market research, product launches, investor materials
+- Creative: writing, worldbuilding, screenplays, narrative games, album and release concepts
+- Engineering: technical documentation, system design, code architecture, hardware specifications
+- Personal: life planning, decision frameworks, research projects, personal organization
+- Legal and compliance: policy analysis, regulatory research, compliance workflows
+- Academic: literature reviews, thesis structuring, grant writing, study design
+- Marketing and brand: campaign planning, content strategy, brand development, design briefs
+- Physical projects: construction planning, renovation scoping, fabrication workflows, event production
+
+If your goal is complex enough to require more than one step, prompt-mage can structure it.
 
 ---
 
@@ -65,7 +81,7 @@ From any Claude Code session:
 
     claude skill prompt-mage
 
-Claude Code loads the instructions and walks you through intake the same way as Claude Chat.
+Claude Code loads the instructions and walks you through the same intake process as Claude Chat.
 
 ### Passing files and directories
 
@@ -81,15 +97,65 @@ Full directory:
 
     claude skill prompt-mage --dir /path/to/project/folder
 
-For URLs or cloud links, paste them inline in your prompt text during intake and describe what each contains.
+For URLs or cloud links, paste them inline during intake and describe what each contains.
 
-### Running kit prompts in Claude Code
+### Execution modes
 
-Each prompt in your kit specifies its required inputs and expected output. For prompts that depend on prior outputs, save the prior output to a temp file and pass it at the next step:
+After your kit is built and the plan is confirmed, prompt-mage will ask how you want to run it. Claude Code supports all three modes:
 
-    claude --file /tmp/prompt1-output.txt "Paste Prompt 2 text here"
+AUTO-RUN: prompt-mage generates an Orchestration Mega Prompt. Paste it into Claude Code once. It runs the full kit automatically - sequential steps in order, parallel steps simultaneously, all outputs saved to named files on disk, automated validation gates between dependent steps. Completion report delivered at the end. Hands-off once started.
 
-Review each output before proceeding. Do not chain steps without verification.
+ATTENDED AUTO-RUN: same automated execution, but Claude Code stops after each prompt - or after each parallel batch - and displays the full output for your review. You type GO to advance, NO-GO to retry the current step, or PARTIAL to selectively rerun prompts in a batch. Nothing advances without your explicit approval. No copy-paste, no context management, full control at every checkpoint.
+
+MANUAL: full Prompt Kit plus HOW-TO guide delivered. You run each prompt yourself.
+
+---
+
+## Risks by execution mode
+
+### AUTO-RUN
+
+The highest-risk mode. Understand these before using it.
+
+Directional correctness is not checked. The automated validation gates confirm that each output matches the expected format and general content description. They do not catch a result that is technically well-formed but factually wrong, built on a bad assumption, or headed in the wrong direction. If prompt 3 produces a subtly incorrect financial figure and you are not watching, prompts 4 and 5 build on that figure without question. The error propagates silently until the completion report.
+
+Cascade failure is real. Each prompt's output feeds the next. A wrong output that passes its validation gate becomes the input for the next step. By the time you review the completion report, multiple downstream outputs may be compromised. Fixing one step may require rerunning several.
+
+Validation gates have limits. They check structure and surface content, not judgment. A market analysis that is confidently written but misses a key variable will pass a gate. A financial model with a wrong formula in a clean format will pass a gate.
+
+When to use it: tasks where inputs are precise, expected outputs are unambiguous, and errors are easy to spot at the end. Data extraction, reformatting, classification, and well-defined single-domain modeling are reasonable candidates. High-stakes decisions, novel analysis, or anything where directional correctness matters as much as format correctness are not.
+
+Recommendation: always review every output file in the completion report before acting on any result.
+
+---
+
+### ATTENDED AUTO-RUN
+
+Significantly lower risk than auto-run. The remaining risks are honest.
+
+You are reviewing outputs, not inputs. You see what Claude produced. You do not see the full prompt-plus-context that generated it unless you look at the source files. If a context file from a prior step was malformed or truncated, the current output may look reasonable while being built on bad data. The GO gate does not verify what went in, only what came out.
+
+Parallel batch review can be shallow under time pressure. When three prompts complete simultaneously and display their outputs for batch review, there is a human tendency to scan rather than read. Approving a batch quickly is easy. This is the same risk as approving any document without reading it carefully.
+
+Judgment fatigue over long kits. A kit with eight or ten steps requires eight or ten deliberate reviews. Attention degrades. Steps toward the end of a long run are more likely to receive less scrutiny than steps at the beginning.
+
+Retry does not reset context. If you NO-GO a step and rerun it, the retry uses the same input context as the first attempt. If the problem is in the context file from a prior step rather than the prompt itself, retrying will produce the same wrong result. You must inspect the context file directly to diagnose this.
+
+When to use it: most real work. The risk profile is close to manual for output quality, with significantly less operational overhead. The key discipline is actually reading each output before typing GO.
+
+---
+
+### MANUAL
+
+The lowest-risk mode. The risks are operator risks, not system risks.
+
+Context ingestion error. You are responsible for copying the correct output from the correct prior step and pasting it into the correct chat. Getting this wrong - pasting the wrong output, truncating it, or pasting it in the wrong position - produces a downstream prompt running on bad context with no warning. This is the most common failure mode in manual operation.
+
+Step sequencing error. Running prompts out of order or skipping a step because the output looked unnecessary is easy to do and hard to detect. The HOW-TO guide specifies the sequence clearly. Deviating from it is a user choice with user consequences.
+
+Output loss. If you close a chat without saving the output, that step must be rerun. There is no recovery mechanism.
+
+When to use it: any situation where you want complete visibility and control, where the stakes are high enough that you want to read and understand every output before it becomes input for the next step, or where you do not have Claude Code available.
 
 ---
 
