@@ -53,6 +53,108 @@ Each new kit needs a fresh chat inside the prompt-mage project. Do not reuse an 
 
 ---
 
+
+## Example inputs
+
+The following examples show the range of inputs prompt-mage can handle, from a simple idea to a complex operational brief.
+
+---
+
+Example 1 - B2C subscription service (simple, user story style)
+
+```
+I want to figure out why customers are cancelling after the first month. I have survey responses and cancellation data. I want to understand the main reasons and come up with ideas to fix it.
+```
+
+prompt-mage will:
+- Identify two distinct tasks: analysis and ideation
+- Sequence them so findings from the analysis feed the ideation step
+- Assign haiku to data extraction and sonnet to synthesis and recommendations
+- Tell you to upload your survey file and cancellation export before running step one
+
+---
+
+Example 2 - Consumer packaged goods launch (moderate, operational brief)
+
+```
+We are launching a new line of personal care products. I need to figure out our retail pricing strategy, understand what margin we need to hit to make the DTC channel viable, write a one-page brief for our contract manufacturer, and put together a competitive positioning summary. I have a cost breakdown sheet and three competitor SKU lists I scraped last week.
+```
+
+prompt-mage will:
+- Flag that pricing strategy, margin modeling, manufacturer brief, and competitive positioning are four separate workstreams
+- Build a sequenced kit where the margin model informs the pricing decision before any external brief is written
+- Register the cost sheet and competitor SKUs as resources and assign them to the correct steps
+- Keep the manufacturer brief on haiku, run the margin and pricing work on sonnet
+
+---
+
+Example 3 - Renewable energy project feasibility (complex, multi-domain)
+
+```
+We are evaluating whether to develop a 4MW ground-mount solar facility on agricultural land we lease in two counties. I need a site feasibility summary, a financial model covering CapEx, interconnection costs, and a 20-year IRR projection under three incentive scenarios (current ITC, reduced ITC, no ITC), an assessment of permitting risk by county, and a one-page executive summary for our equity partner. The land lease terms, utility interconnection queue data, and a preliminary equipment quote are in the attached folder.
+```
+
+prompt-mage will:
+- Audit the prompt and confirm it contains five discrete deliverables with shared data dependencies
+- Build the kit so the financial model is not started until site feasibility and interconnection data are resolved
+- Run permitting risk assessment in parallel with the financial model since neither depends on the other
+- Assign sonnet across all financial and document tasks, flag the IRR sensitivity analysis as a candidate for opus only if all three incentive scenarios must be modeled simultaneously in a single output
+- Register all three attached resources and map each to the step that requires it
+
+---
+
+Example 4 - Sustainable optimization of existing production operations (complex, specified operational)
+
+```
+Our primary manufacturing line runs three shifts producing 180,000 units per week. Energy consumption is our largest controllable cost. I need to: audit our current consumption baseline by shift and by equipment zone using the attached 12-month interval meter data and maintenance logs; identify the top five optimization opportunities ranked by implementation cost and payback period; model the carbon reduction impact of each opportunity against our current Scope 2 reporting baseline; determine whether any opportunities qualify for utility demand response incentives in our ISO zone; and produce a phased implementation roadmap with cost, timeline, and assigned owner fields ready for ops review. Our current energy contracts, equipment specs, and last year's sustainability report are in the linked Dropbox folder.
+```
+
+prompt-mage will:
+- Flag that this prompt contains an audit, a ranking model, a carbon impact model, a regulatory eligibility check, and an implementation roadmap - five workstreams, some interdependent
+- Build the kit so the consumption audit and baseline establishment run first, since every downstream step depends on that output
+- Sequence the carbon modeling and demand response eligibility check in parallel after the top five opportunities are ranked
+- Hold the roadmap generation as the final step, explicitly dependent on all prior outputs
+- Register the interval meter data, maintenance logs, energy contracts, equipment specs, and Dropbox folder contents as named resources with step assignments
+- Assign haiku to data extraction from meter logs, sonnet to ranking models and carbon impact analysis, and confirm whether opus is genuinely needed or whether cross-model dependencies can be resolved with well-structured sonnet prompts and explicit context passing
+
+---
+
+Example 5 - Messy creative project (rough, multi-format input)
+
+```
+ok so i have this idea for a concept album. its about a guy who slowly realizes he might be living in a simulation. starts hopeful then gets paranoid then kind of peaceful at the end. i have voice memos, some lyrics i scribbled in my notes app, a playlist of reference tracks, a few pages of world-building stuff i wrote at 2am, and a folder of images i want to use for the visual identity. i dont know where to start or what order to do things in.
+```
+
+prompt-mage will:
+- Normalize the input across formats: voice memos, scattered notes, reference material, visuals, and world-building fragments
+- Identify five distinct workstreams: narrative arc, tracklist and song structure, lyrical development, visual identity, and production reference brief
+- Flag that the narrative arc must be established before lyrics or tracklist can be structured - surfaces this as a required first step the user has not identified
+- Sequence world-building and reference playlist analysis in parallel since neither depends on the other
+- Register all uploaded files and voice memo transcripts as resources and assign each to the correct step
+- Assign haiku to transcription and reference sorting, sonnet to narrative structure and lyric drafts, and hold opus consideration for the final thematic synthesis if arc and lyrics need to be reconciled simultaneously
+
+---
+
+Example 6 - Live digital art show (complex, multi-domain production brief)
+
+```
+We are producing a one-night live digital art show in a 400-person venue. The show features six artists doing real-time generative work projected across three synchronized screens, a live ambient score composed and performed on stage, and an interactive installation in the lobby where audience phones connect to a local network and feed data into one of the projections. I need to: define the full technical infrastructure for the three-screen sync system and the phone-to-projection data pipeline; write the artist brief that explains the technical constraints and creative parameters each artist must work within; build the production timeline from load-in through strike; identify every vendor category we need to source (AV, networking, power, venue liaison, tech crew); draft the audience-facing experience description for ticketing and press; and create a contingency plan for the three most likely technical failure scenarios during the live show. We have a venue tech spec sheet, a rough budget, and notes from a planning call with two of the artists.
+```
+
+prompt-mage will:
+- Flag that this contains six discrete deliverables across technical, creative, production, and communications domains - some tightly interdependent
+- Establish that the technical infrastructure definition must come first, since the artist brief, data pipeline spec, and contingency plan all depend on what the system can actually do
+- Run vendor category identification and production timeline build in parallel once the infrastructure is defined, since neither depends on the other
+- Hold the artist brief until infrastructure is confirmed - prevent it from being written against assumptions that the tech spec may invalidate
+- Sequence the contingency plan last, after infrastructure and timeline are complete, since failure scenarios must be written against actual system design and show flow
+- Assign the audience-facing copy as an independent step that can run at any point after the experience concept is clear
+- Register the venue tech spec, budget, and planning call notes as resources and map each to the steps that require them
+- Assign haiku to vendor list extraction and timeline formatting, sonnet to infrastructure spec, artist brief, contingency planning, and press copy - flag opus only if the three-screen sync and phone data pipeline require simultaneous multi-variable system design that cannot be cleanly separated
+
+---
+
+---
+
 ## SKILL INSTALL - USING WITH CLAUDE CODE
 
 Install prompt-mage as a named skill so you can call it by name from any Claude Code session.
@@ -188,63 +290,6 @@ haiku: fast, low cost. Used for file reading, data extraction, summarization, fo
 sonnet: the default for most real work. Used for financial modeling, business writing, structured analysis, planning, research, and anything requiring moderate multi-step reasoning. If you are unsure which model a task needs, it is sonnet.
 
 opus: reserved for tasks that genuinely cannot be broken into discrete steps and require simultaneous reasoning across multiple truly interdependent variables. If prompt-mage assigns opus to more than one step in a kit, it stops and tells you the problem needs further decomposition. In practice, most business and financial work runs entirely on sonnet.
-
----
-
-## Example inputs
-
-The following examples show the range of inputs prompt-mage can handle, from a simple idea to a complex operational brief.
-
----
-
-Example 1 - B2C subscription service (simple, user story style)
-
-    I want to figure out why customers are cancelling after the first month. I have survey responses and cancellation data. I want to understand the main reasons and come up with ideas to fix it.
-
-prompt-mage will:
-- Identify two distinct tasks: analysis and ideation
-- Sequence them so findings from the analysis feed the ideation step
-- Assign haiku to data extraction and sonnet to synthesis and recommendations
-- Tell you to upload your survey file and cancellation export before running step one
-
----
-
-Example 2 - Consumer packaged goods launch (moderate, operational brief)
-
-    We are launching a new line of personal care products. I need to figure out our retail pricing strategy, understand what margin we need to hit to make the DTC channel viable, write a one-page brief for our contract manufacturer, and put together a competitive positioning summary. I have a cost breakdown sheet and three competitor SKU lists I scraped last week.
-
-prompt-mage will:
-- Flag that pricing strategy, margin modeling, manufacturer brief, and competitive positioning are four separate workstreams
-- Build a sequenced kit where the margin model informs the pricing decision before any external brief is written
-- Register the cost sheet and competitor SKUs as resources and assign them to the correct steps
-- Keep the manufacturer brief on haiku, run the margin and pricing work on sonnet
-
----
-
-Example 3 - Renewable energy project feasibility (complex, multi-domain)
-
-    We are evaluating whether to develop a 4MW ground-mount solar facility on agricultural land we lease in two counties. I need a site feasibility summary, a financial model covering CapEx, interconnection costs, and a 20-year IRR projection under three incentive scenarios (current ITC, reduced ITC, no ITC), an assessment of permitting risk by county, and a one-page executive summary for our equity partner. The land lease terms, utility interconnection queue data, and a preliminary equipment quote are in the attached folder.
-
-prompt-mage will:
-- Audit the prompt and confirm it contains five discrete deliverables with shared data dependencies
-- Build the kit so the financial model is not started until site feasibility and interconnection data are resolved
-- Run permitting risk assessment in parallel with the financial model since neither depends on the other
-- Assign sonnet across all financial and document tasks, flag the IRR sensitivity analysis as a candidate for opus only if all three incentive scenarios must be modeled simultaneously in a single output
-- Register all three attached resources and map each to the step that requires it
-
----
-
-Example 4 - Sustainable optimization of existing production operations (complex, specified operational)
-
-    Our primary manufacturing line runs three shifts producing 180,000 units per week. Energy consumption is our largest controllable cost. I need to: audit our current consumption baseline by shift and by equipment zone using the attached 12-month interval meter data and maintenance logs; identify the top five optimization opportunities ranked by implementation cost and payback period; model the carbon reduction impact of each opportunity against our current Scope 2 reporting baseline; determine whether any opportunities qualify for utility demand response incentives in our ISO zone; and produce a phased implementation roadmap with cost, timeline, and assigned owner fields ready for ops review. Our current energy contracts, equipment specs, and last year's sustainability report are in the linked Dropbox folder.
-
-prompt-mage will:
-- Flag that this prompt contains an audit, a ranking model, a carbon impact model, a regulatory eligibility check, and an implementation roadmap - five workstreams, some interdependent
-- Build the kit so the consumption audit and baseline establishment run first, since every downstream step depends on that output
-- Sequence the carbon modeling and demand response eligibility check in parallel after the top five opportunities are ranked
-- Hold the roadmap generation as the final step, explicitly dependent on all prior outputs
-- Register the interval meter data, maintenance logs, energy contracts, equipment specs, and Dropbox folder contents as named resources with step assignments
-- Assign haiku to data extraction from meter logs, sonnet to ranking models and carbon impact analysis, and confirm whether opus is genuinely needed or whether cross-model dependencies can be resolved with well-structured sonnet prompts and explicit context passing
 
 ---
 
