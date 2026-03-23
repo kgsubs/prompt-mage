@@ -54,7 +54,7 @@ Each new kit needs a fresh chat inside the prompt-mage project. Do not reuse an 
 ---
 
 
-## Example inputs
+## EXAMPLES
 
 The following examples show the range of inputs prompt-mage can handle, from a simple idea to a complex operational brief.
 
